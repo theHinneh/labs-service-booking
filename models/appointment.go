@@ -32,6 +32,13 @@ type Appointment struct {
 	ContactId       int    `json:"contact_id" binding:"required"`
 }
 
+type AppointmentStaffData struct {
+	Shop    string `json:"shop"`
+	Staff   string `json:"staff"`
+	Service string `json:"service"`
+	Contact string `json:"contact"`
+}
+
 //func (MgPortfolios *Appointment) BeforeCreate(_ *gorm.DB) error {
 //	MgPortfolios.AppointmentId = uuid.New().String()
 //	return nil

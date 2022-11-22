@@ -202,3 +202,26 @@ func UpdateAppointment(context *gin.Context) {
 		"data":    apt,
 	})
 }
+
+func GetAppointmentStaffDetails(context *gin.Context) {
+	var appointment models.AppointmentStaffData
+	appointmentId, _ := strconv.Atoi(context.Param("id"))
+	var errorResponse utils.AppointmentErrorResponse
+
+	query := "SELECT shop.shop_name Shop, CONCAT(s.last_name, ' ', s.first_name) Staff, s2.service_name Service, c.contact FROM shop LEFT JOIN appointment a on shop.shop_id = a.shop_id LEFT JOIN staff s on shop.shop_id = s.shop_id LEFT JOIN services s2 on s.staff_id = s2.staff_id LEFT OUTER JOIN contacts c on c.contact_id = s.contact_id WHERE appointment_id = ?;"
+	result := db.DB.Debug().Raw(query, appointmentId).Scan(&appointment)
+
+	if result.Error != nil {
+		errorResponse.Status = "error"
+		errorResponse.Data = nil
+		errorResponse.Message = "Not found"
+
+		context.JSONP(http.StatusNotFound, &errorResponse)
+	} else {
+		context.JSONP(http.StatusOK, gin.H{
+			"message": "Appointments",
+			"status":  "Success",
+			"data":    appointment,
+		})
+	}
+}
