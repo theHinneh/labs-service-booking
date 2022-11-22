@@ -33,10 +33,15 @@ type Appointment struct {
 }
 
 type AppointmentStaffData struct {
-	Shop    string `json:"shop"`
-	Staff   string `json:"staff"`
-	Service string `json:"service"`
-	Contact string `json:"contact"`
+	Shop            string `json:"shop"`
+	StaffName       string `json:"staff"`
+	StaffEmail      string `json:"staff_email"`
+	ClientContact   string `json:"client_contact"`
+	Service         string `json:"service"`
+	StaffContact    string `json:"staff_contact"`
+	AppointmentDate string `json:"appointment_date"`
+	ClientEmail     string `json:"client_email"`
+	Completed       bool   `json:"completed"`
 }
 
 //func (MgPortfolios *Appointment) BeforeCreate(_ *gorm.DB) error {

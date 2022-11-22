@@ -208,8 +208,25 @@ func GetAppointmentStaffDetails(context *gin.Context) {
 	appointmentId, _ := strconv.Atoi(context.Param("id"))
 	var errorResponse utils.AppointmentErrorResponse
 
-	query := "SELECT shop.shop_name Shop, CONCAT(s.last_name, ' ', s.first_name) Staff, s2.service_name Service, c.contact FROM shop LEFT JOIN appointment a on shop.shop_id = a.shop_id LEFT JOIN staff s on shop.shop_id = s.shop_id LEFT JOIN services s2 on s.staff_id = s2.staff_id LEFT OUTER JOIN contacts c on c.contact_id = s.contact_id WHERE appointment_id = ?;"
-	result := db.DB.Debug().Raw(query, appointmentId).Scan(&appointment)
+	query := `
+			SELECT shop.shop_name                         Shop,
+				   CONCAT(s.last_name, ' ', s.first_name) StaffName,
+				   s.email                                StaffEmail,
+				   s2.service_name                        Service,
+				   c.contact                              StaffContact,
+				   a.appointment_date                     AppointmentDate,
+				   a.client_email                         ClientEmail,
+				   c2.contact                             ClientContact,
+				   a.completed                            Completed
+			FROM shop
+					 LEFT JOIN appointment a on shop.shop_id = a.shop_id
+					 LEFT JOIN staff s on shop.shop_id = s.shop_id
+					 LEFT JOIN services s2 on s.staff_id = s2.staff_id
+					 LEFT OUTER JOIN contacts c on c.contact_id = s.contact_id
+					 LEFT JOIN contacts c2 on c2.contact_id = a.contact_id
+			WHERE appointment_id = ?;
+`
+	result := db.DB.Raw(query, appointmentId).Scan(&appointment)
 
 	if result.Error != nil {
 		errorResponse.Status = "error"
