@@ -81,7 +81,7 @@ func AddAvailability(context *gin.Context) {
 	}
 
 	query := "INSERT INTO Availability(date, staff_id) VALUES (?, ?)"
-	result := db.DB.Debug().Raw(query, availability.AvailabilityDate, availability.StaffId).Scan(&availability)
+	result := db.DB.Raw(query, availability.AvailabilityDate, availability.StaffId).Scan(&availability)
 
 	if result.Error != nil {
 		errorResponse.Status = "error"

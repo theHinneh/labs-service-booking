@@ -30,6 +30,7 @@ func SetupApp() *gin.Engine {
 	log.Info().Msg("Setting up routers")
 	routes.AppointmentRoutes(app)
 	routes.AvailabilityRoutes(app)
+	routes.Contacts(app)
 
 	return app
 }
