@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/theHinneh/labs-service-booking/db"
 	"github.com/theHinneh/labs-service-booking/models"
@@ -16,7 +17,7 @@ func GetAllAppointments(context *gin.Context) {
 
 	result := db.DB.Raw("SELECT * FROM Appointment;").Scan(&appointments)
 
-	if &result.Error != nil {
+	if result.Error != nil {
 		errorResponse.Status = "error"
 		errorResponse.Data = nil
 		errorResponse.Message = "Not found"
@@ -39,7 +40,7 @@ func GetAnAppointment(context *gin.Context) {
 	query := "SELECT * FROM Appointment WHERE appointment_id = ?"
 	result := db.DB.Raw(query, appointmentId).Scan(&appointment)
 
-	if &result.Error != nil {
+	if result.Error != nil {
 		errorResponse.Status = "error"
 		errorResponse.Data = nil
 		errorResponse.Message = "Not found"
@@ -47,7 +48,7 @@ func GetAnAppointment(context *gin.Context) {
 		context.JSONP(http.StatusNotFound, &errorResponse)
 	} else {
 		context.JSONP(http.StatusOK, gin.H{
-			"message": "Appointments",
+			"message": "Appointment",
 			"status":  "Success",
 			"data":    appointment,
 		})
@@ -61,7 +62,7 @@ func GetPendingAppointments(context *gin.Context) {
 	query := "SELECT * FROM Appointment WHERE completed = ?"
 	result := db.DB.Raw(query, 0).Scan(&appointments)
 
-	if &result.Error != nil {
+	if result.Error != nil {
 		errorResponse.Status = "error"
 		errorResponse.Data = nil
 		errorResponse.Message = "Not found"
@@ -69,7 +70,7 @@ func GetPendingAppointments(context *gin.Context) {
 		context.JSONP(http.StatusNotFound, &errorResponse)
 	} else {
 		context.JSONP(http.StatusOK, gin.H{
-			"message": "Appointments",
+			"message": "Pending Appointments",
 			"status":  "Success",
 			"data":    appointments,
 		})
@@ -83,7 +84,7 @@ func GetCompletedAppointments(context *gin.Context) {
 	query := "SELECT * FROM Appointment WHERE completed = ?"
 	result := db.DB.Raw(query, 1).Scan(&appointments)
 
-	if &result.Error != nil {
+	if result.Error != nil {
 		errorResponse.Status = "error"
 		errorResponse.Data = nil
 		errorResponse.Message = "Not found"
@@ -91,7 +92,7 @@ func GetCompletedAppointments(context *gin.Context) {
 		context.JSONP(http.StatusNotFound, &errorResponse)
 	} else {
 		context.JSONP(http.StatusOK, gin.H{
-			"message": "Appointments",
+			"message": "Completed Appointments",
 			"status":  "Success",
 			"data":    appointments,
 		})
@@ -132,7 +133,7 @@ func AddAppointment(context *gin.Context) {
 	}
 
 	context.JSONP(http.StatusOK, gin.H{
-		"message": "Appointments",
+		"message": "Added Appointment",
 		"status":  "Success",
 		"data":    apt,
 	})
@@ -154,7 +155,7 @@ func DeleteAppointment(context *gin.Context) {
 	}
 
 	context.JSONP(http.StatusOK, gin.H{
-		"message": "Appointment Deleted",
+		"message": fmt.Sprintf("Appointment %d Deleted", appointmentId),
 		"status":  "Success",
 		"data":    appointmentId,
 	})
@@ -197,7 +198,7 @@ func UpdateAppointment(context *gin.Context) {
 	}
 
 	context.JSONP(http.StatusOK, gin.H{
-		"message": "Appointment Updated",
+		"message": fmt.Sprintf("Appointment %d Updated", appointmentId),
 		"status":  "Success",
 		"data":    apt,
 	})
@@ -236,7 +237,7 @@ func GetAppointmentStaffDetails(context *gin.Context) {
 		context.JSONP(http.StatusNotFound, &errorResponse)
 	} else {
 		context.JSONP(http.StatusOK, gin.H{
-			"message": "Appointments",
+			"message": fmt.Sprintf("Appointment %d Details", appointmentId),
 			"status":  "Success",
 			"data":    appointment,
 		})

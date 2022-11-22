@@ -1,13 +1,15 @@
 package models
 
-import (
-	"time"
-)
-
 type Availability struct {
-	AvailabilityId int       `json:"availability_id"`
-	Date           time.Time `json:"availability_date"`
-	StaffId        int       `json:"staff_id"`
+	AvailabilityId   int    `json:"availability_id"`
+	AvailabilityDate string `json:"availability_date" binding:"required"`
+	StaffId          int    `json:"staff_id" binding:"required"`
+}
+
+type AvailabilityDetailsResponse struct {
+	StaffEmail       string `json:"staff_email"`
+	StaffName        string `json:"staff_name"`
+	AvailabilityDate string `json:"availability_date"`
 }
 
 //func (MgPortfolios *Availability) BeforeCreate(_ *gorm.DB) error {
