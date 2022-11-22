@@ -5,7 +5,7 @@ import (
 	"github.com/theHinneh/labs-service-booking/controllers"
 )
 
-func Contacts(router *gin.Engine) {
+func ContactsRoutes(router *gin.Engine) {
 	v1 := router.Group("/v1/contacts")
 	{
 		v1.GET("/all", controllers.GetContacts)
