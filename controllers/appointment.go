@@ -221,7 +221,8 @@ func GetAppointmentStaffDetails(context *gin.Context) {
 				   a.completed                            Completed
 			FROM shop
 					 LEFT JOIN appointment a on shop.shop_id = a.shop_id
-					 LEFT JOIN staff s on shop.shop_id = s.shop_id
+					 LEFT JOIN sta
+					     ff s on shop.shop_id = s.shop_id
 					 LEFT JOIN services s2 on s.staff_id = s2.staff_id
 					 LEFT OUTER JOIN contacts c on c.contact_id = s.contact_id
 					 LEFT JOIN contacts c2 on c2.contact_id = a.contact_id
